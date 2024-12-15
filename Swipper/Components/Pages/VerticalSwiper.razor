@@ -1,0 +1,26 @@
+﻿@rendermode InteractiveServer
+
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        @foreach (var slide in Slides)
+        {
+            <div class="swiper-slide">
+                @slide
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public List<string> Slides { get; set; } = new();
+
+    [Inject] private IJSRuntime JSRuntime { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeSwiper");
+        }
+    }
+}
